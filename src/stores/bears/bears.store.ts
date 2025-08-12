@@ -12,6 +12,10 @@ interface BearState {
 
     bears: Bear[];
 
+    computed: {
+        getTotalBears: () => number;
+    }
+
     increaseBlackBears: (by: number) => void;
     increasePolarBears: (by: number) => void;
     increasePandaBears: (by: number) => void;
@@ -23,13 +27,16 @@ interface BearState {
 }
 
 
-export const useBearStore = create<BearState>()(set => ({
+export const useBearStore = create<BearState>()((set, get) => ({
     blackBears: 10,
     polarBears: 5,
     pandaBears: 2,
 
     bears: [{id: 1, name: 'Oso #1'}],
 
+    computed: {
+        getTotalBears: () => get().blackBears + get().polarBears + get().pandaBears + get().bears.length,
+    },
 
     increaseBlackBears: (by: number) => set((state) => ({ blackBears: state.blackBears + by })),
     increasePolarBears: (by: number) => set((state) => ({ polarBears: state.polarBears + by })),
